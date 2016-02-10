@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item android:id="@+id/add"
+        android:title="@string/add"/>
+    <item android:id="@+id/sorting"
+        android:title="@string/sorting" />
+    <item android:id="@+id/ascending_order"
+        android:title="@string/ascending_order" />
+    <item android:id="@+id/help"
+        android:title="@string/help" />
 </menu>

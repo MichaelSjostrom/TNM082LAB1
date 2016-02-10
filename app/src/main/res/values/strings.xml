@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">MyApplication</string>
+    <string name="add">Item Detail</string>
+    <string name="sorting">Item Detail</string>
+    <string name="ascending_order">Item Detail</string>
+    <string name="help">Item Detail</string>
+    <string name="delete">Item Detail</string>
+    <string name="edit">Item Detail</string>
     <string name="title_item_detail">Item Detail</string>
 </resources>
