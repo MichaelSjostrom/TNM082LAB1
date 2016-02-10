@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/delete"
-        android:title="@string/delete"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- "Mark Favorite", should appear as action button if possible -->
     <item android:id="@+id/edit"
-        android:title="@string/edit" />
+        android:title="@string/edit"
+        android:icon="@drawable/edit_button"
+        app:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/delete"
+        android:title="@string/delete"
+        android:icon="@drawable/delete_button"
+        app:showAsAction="ifRoom"/>
+
 </menu>
