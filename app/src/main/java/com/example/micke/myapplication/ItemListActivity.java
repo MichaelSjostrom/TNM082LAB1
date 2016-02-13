@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.micke.myapplication.dummy.DummyContent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,6 +42,10 @@ public class ItemListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private ActionMode mActionMode;
+    private Datasource DS;
+    private ArrayList mArrayList;
+
+    private boolean ascending = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,7 @@ public class ItemListActivity extends AppCompatActivity {
             }
         });
 
+        openDB();
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -71,19 +77,20 @@ public class ItemListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(DummyContent.ITEMS));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter());
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final List<DummyContent.DummyItem> mValues;
+        //private final List<DummyContent.DummyItem> mValues;
 
-        public SimpleItemRecyclerViewAdapter(List<DummyContent.DummyItem> items) {
-            mValues = items;
+        public SimpleItemRecyclerViewAdapter() {
+            mArrayList = DS.fetchAll(1, ascending);
         }
 
         @Override
@@ -95,9 +102,9 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+//            holder.mItem = mValues.get(position);
+//            holder.mIdView.setText(mValues.get(position).id);
+//            holder.mContentView.setText(mValues.get(position).content);
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -132,7 +139,8 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            return mValues.size();
+            //return mValues.size();
+            return 0;
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -200,5 +208,12 @@ public class ItemListActivity extends AppCompatActivity {
         }
     };
 
+    private void openDB(){
+        DS = new Datasource(this);
+        DS.open();
+    }
 
+    private void closeDB(){
+        DS.close();
+    }
 }
