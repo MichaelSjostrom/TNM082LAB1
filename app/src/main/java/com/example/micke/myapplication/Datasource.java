@@ -38,6 +38,7 @@ public class Datasource extends SQLiteOpenHelper {
 
     public void open() throws SQLException {
         database = getWritableDatabase();
+
     }
 
     public long insertItem(String title, int rating, String description) {
@@ -54,6 +55,14 @@ public class Datasource extends SQLiteOpenHelper {
         values.put(COLUMN_RATING, rating);
         values.put(COLUMN_DESCRIPTION, description);
         database.update(TABLE, values, COLUMN_ID + " = " + id, null);
+    }
+
+    public void deleteAllItems(){
+        //database.delete(TABLE, null, null);
+        database.delete(TABLE, COLUMN_TITLE, null);
+        database.delete(TABLE, COLUMN_RATING, null);
+        database.delete(TABLE, COLUMN_DESCRIPTION, null);
+        database.delete(TABLE, COLUMN_ID, null);
     }
 
     public void deleteItem(long id) {

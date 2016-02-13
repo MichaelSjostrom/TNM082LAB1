@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -43,7 +44,7 @@ public class ItemListActivity extends AppCompatActivity {
     private boolean mTwoPane;
     private ActionMode mActionMode;
     private Datasource DS;
-    private ArrayList mArrayList;
+    private ArrayList<Item> mArrayList;
 
     private boolean ascending = true;
 
@@ -66,6 +67,11 @@ public class ItemListActivity extends AppCompatActivity {
         });
 
         openDB();
+        DS.deleteAllItems();
+        DS.insertItem("professor", 1, "idiot");
+        DS.insertItem("student", 2, "lunatic");
+        closeDB();
+
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -90,7 +96,10 @@ public class ItemListActivity extends AppCompatActivity {
         //private final List<DummyContent.DummyItem> mValues;
 
         public SimpleItemRecyclerViewAdapter() {
+            openDB();
             mArrayList = DS.fetchAll(1, ascending);
+            Log.d("TAG", String.valueOf(mArrayList.size()));
+            closeDB();
         }
 
         @Override
@@ -102,16 +111,16 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-//            holder.mItem = mValues.get(position);
-//            holder.mIdView.setText(mValues.get(position).id);
-//            holder.mContentView.setText(mValues.get(position).content);
+            holder.mItem = mArrayList.get(position);
+            holder.mIdView.setText(String.valueOf(mArrayList.get(position).getId()));
+            holder.mContentView.setText(mArrayList.get(position).getDescription());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (mTwoPane) {
                         Bundle arguments = new Bundle();
-                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        arguments.putString(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getId()));
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -139,15 +148,14 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public int getItemCount() {
-            //return mValues.size();
-            return 0;
+            return mArrayList.size();
         }
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public DummyContent.DummyItem mItem;
+            public Item mItem;
 
             public ViewHolder(View view) {
                 super(view);
