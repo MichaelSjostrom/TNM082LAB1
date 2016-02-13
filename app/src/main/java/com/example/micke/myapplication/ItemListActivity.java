@@ -81,10 +81,15 @@ public class ItemListActivity extends AppCompatActivity {
         }
 
         openDB();
+        DS.insertItem("hero", 3, "wheel");
         myList = DS.fetchAll(sortingColumn, ascending);
         mAdapter = new ArrayAdapter<Item>(this, android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1, myList);
         listView.setAdapter(mAdapter);
+
+
+        mAdapter.notifyDataSetChanged();
+
         closeDB();
     }
 
