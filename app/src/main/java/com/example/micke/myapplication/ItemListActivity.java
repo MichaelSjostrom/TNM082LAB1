@@ -67,6 +67,7 @@ public class ItemListActivity extends AppCompatActivity {
         });
 
         openDB();
+        //Varför vägrar den radera "COLUMN_ID"?
         DS.deleteAllItems();
         DS.insertItem("professor", 1, "idiot");
         DS.insertItem("student", 2, "lunatic");
