@@ -45,7 +45,7 @@ public class ItemListActivity extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private ActionMode mActionMode;
-    private Datasource DS;
+    public Datasource DS;
     private ArrayList<Item> mArrayList;
 
     private boolean ascending = true;
@@ -65,7 +65,8 @@ public class ItemListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+
+                Snackbar.make(view, "Far åt helvete", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -140,9 +141,11 @@ public class ItemListActivity extends AppCompatActivity {
                         v.setSelected(true);
 
                     } else {
+                        Log.d("kalle", String.valueOf(holder.mItem.getId()));
+
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getId()));
 
                         context.startActivity(intent);
                     }
