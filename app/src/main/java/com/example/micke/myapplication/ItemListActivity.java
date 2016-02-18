@@ -19,7 +19,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.micke.myapplication.dummy.DummyContent;
@@ -66,12 +68,12 @@ public class ItemListActivity extends AppCompatActivity {
             }
         });
 
-        openDB();
+       /* openDB();
         //Varför vägrar den radera "COLUMN_ID"?
         DS.deleteAllItems();
         DS.insertItem("professor", 1, "idiot");
         DS.insertItem("student", 2, "lunatic");
-        closeDB();
+        closeDB();*/
 
         View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
@@ -84,6 +86,25 @@ public class ItemListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
+
+       /* final LayoutInflater factory = getLayoutInflater();
+
+        final View textEntryView = factory.inflate(R.menu.optionsmenu_fragment, null);*/
+
+        //landmarkEditNameView = (EditText) textEntryView.findViewById(R.id.landmark_name_dialog_edit);
+       /* MenuInflater inflater = new MenuInflater(this);
+
+        inflater.inflate(R.menu.optionsmenu_activity_b, null);*/
+        //OnClickListener for adding a post
+       /* final Button add = (Button) findViewById(R.id.add);
+        add.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                DS.insertItem("Hej", 3, "da");
+                mArrayList = DS.fetchAll(1, ascending);
+
+            }
+        });*/
 
     }
 
@@ -139,7 +160,7 @@ public class ItemListActivity extends AppCompatActivity {
                     } else {
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.id);
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
 
                         context.startActivity(intent);
                     }
@@ -176,7 +197,29 @@ public class ItemListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.optionsmenu_fragment, menu);
+        /*final Button add = (Button) menu.getItem(1);
+        add.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                Log.d("TAG", "hej");
+
+            }
+        });*/
+
         return true;
+    }
+
+    //Used when an optionsmenu item is used
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.add:
+                //DS.insertItem("kung", 3, "gustav");
+                //mArrayList = DS.fetchAll(1, ascending);
+                Log.d("TAG", "aaapa");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {

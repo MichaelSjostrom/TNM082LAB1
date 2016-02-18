@@ -59,10 +59,11 @@ public class Datasource extends SQLiteOpenHelper {
 
     public void deleteAllItems(){
         //database.delete(TABLE, null, null);
+        database.delete(TABLE, COLUMN_ID, null);
         database.delete(TABLE, COLUMN_TITLE, null);
         database.delete(TABLE, COLUMN_RATING, null);
         database.delete(TABLE, COLUMN_DESCRIPTION, null);
-        database.delete(TABLE, COLUMN_ID, null);
+
     }
 
     public void deleteItem(long id) {
