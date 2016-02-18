@@ -50,6 +50,8 @@ public class ItemListActivity extends AppCompatActivity {
 
     private boolean ascending = true;
 
+    View recyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class ItemListActivity extends AppCompatActivity {
         DS.insertItem("student", 2, "lunatic");
         closeDB();*/
 
-        View recyclerView = findViewById(R.id.item_list);
+        recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
 
@@ -193,8 +195,10 @@ public class ItemListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.add:
-                //DS.insertItem("kung", 3, "gustav");
-                //mArrayList = DS.fetchAll(1, ascending);
+                openDB();
+                DS.insertItem("kung", 3, "gustav");
+                closeDB();
+                setupRecyclerView((RecyclerView) recyclerView);
                 Log.d("TAG", "aaapa");
                 return true;
             default:
