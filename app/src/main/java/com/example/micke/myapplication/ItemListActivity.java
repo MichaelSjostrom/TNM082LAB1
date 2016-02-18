@@ -145,7 +145,9 @@ public class ItemListActivity extends AppCompatActivity {
 
                         Context context = v.getContext();
                         Intent intent = new Intent(context, ItemDetailActivity.class);
-                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, String.valueOf(holder.mItem.getId()));
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_TITLE, String.valueOf(holder.mItem.getTitle()));
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_DESCRIPTION, String.valueOf(holder.mItem.getDescription()));
 
                         context.startActivity(intent);
                     }

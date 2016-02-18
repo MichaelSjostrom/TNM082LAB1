@@ -28,6 +28,8 @@ public class ItemDetailFragment extends Fragment {
      * represents.
      */
     public static final String ARG_ITEM_ID = "item_id";
+    public static final String ARG_ITEM_TITLE = "item_title";
+    public static final String ARG_ITEM_DESCRIPTION = "item_description";
 
     /**
      * The dummy content this fragment is presenting.
@@ -44,32 +46,33 @@ public class ItemDetailFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mItem = new Item();
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             // Load the dummy content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
 
-            Log.d("kalle", (getArguments().getString(ARG_ITEM_ID)));
-
             //This should be replaced
             //mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            Long argID = getArguments().getLong(ARG_ITEM_ID, 0);
+            String argTitle = getArguments().getString(ARG_ITEM_TITLE);
+            String argDescription = getArguments().getString(ARG_ITEM_DESCRIPTION);
 
-            ItemListActivity.DS.open();
-            Log.d("kalle", "before");
-            mItem = ItemListActivity.DS.getItem(Long.valueOf(getArguments().getString(ARG_ITEM_ID)));
-            Log.d("kalle", "between");
-            Log.d("kalle", mItem.getTitle());
-            Log.d("kalle", "after");
-            //mItem = DS.getItem(getArguments().getString(ARG_ITEM_ID));
-            //Log.d("kalle", "here: " + mItem.toString());
+            Log.d("kalle", String.valueOf(argID));
+            Log.d("kalle",argTitle);
+            Log.d("kalle",argDescription);
+            Log.d("kalle","after");
+            mItem.setId(argID);
+            mItem.setTitle(argTitle);
+            mItem.setDescription(argDescription);
+
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
 
             if (appBarLayout != null) {
-                //appBarLayout.setTitle(mItem.content);
-                appBarLayout.setTitle("Synd..");
-                Log.d("kalle", "here i am");
+                appBarLayout.setTitle(mItem.getTitle());
+
             }
         }
     }
