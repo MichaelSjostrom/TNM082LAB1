@@ -179,15 +179,6 @@ public class ItemListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.optionsmenu_fragment, menu);
-        /*final Button add = (Button) menu.getItem(1);
-        add.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-
-                Log.d("TAG", "hej");
-
-            }
-        });*/
-
         return true;
     }
 
@@ -199,7 +190,6 @@ public class ItemListActivity extends AppCompatActivity {
                 DS.insertItem("kung", 3, "gustav");
                 closeDB();
                 setupRecyclerView((RecyclerView) recyclerView);
-                Log.d("TAG", "aaapa");
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
