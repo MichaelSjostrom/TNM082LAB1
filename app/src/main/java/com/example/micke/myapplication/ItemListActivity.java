@@ -86,26 +86,6 @@ public class ItemListActivity extends AppCompatActivity {
             // activity should be in two-pane mode.
             mTwoPane = true;
         }
-
-       /* final LayoutInflater factory = getLayoutInflater();
-
-        final View textEntryView = factory.inflate(R.menu.optionsmenu_fragment, null);*/
-
-        //landmarkEditNameView = (EditText) textEntryView.findViewById(R.id.landmark_name_dialog_edit);
-       /* MenuInflater inflater = new MenuInflater(this);
-
-        inflater.inflate(R.menu.optionsmenu_activity_b, null);*/
-        //OnClickListener for adding a post
-       /* final Button add = (Button) findViewById(R.id.add);
-        add.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v) {
-
-                DS.insertItem("Hej", 3, "da");
-                mArrayList = DS.fetchAll(1, ascending);
-
-            }
-        });*/
-
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
