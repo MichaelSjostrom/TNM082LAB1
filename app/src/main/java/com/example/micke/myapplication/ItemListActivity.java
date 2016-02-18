@@ -49,7 +49,7 @@ public class ItemListActivity extends AppCompatActivity {
     private ArrayList<Item> mArrayList;
 
     private boolean ascending = true;
-
+    private SimpleItemRecyclerViewAdapter mAdapter;
     View recyclerView;
 
     @Override
@@ -69,6 +69,7 @@ public class ItemListActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
 
        /* openDB();
         //Varför vägrar den radera "COLUMN_ID"?
@@ -91,13 +92,12 @@ public class ItemListActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView(@NonNull RecyclerView recyclerView) {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter());
+        mAdapter = new SimpleItemRecyclerViewAdapter();
+        recyclerView.setAdapter(mAdapter);
     }
 
     public class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
-
-        //private final List<DummyContent.DummyItem> mValues;
 
         public SimpleItemRecyclerViewAdapter() {
             openDB();
@@ -188,8 +188,9 @@ public class ItemListActivity extends AppCompatActivity {
             case R.id.add:
                 openDB();
                 DS.insertItem("kung", 3, "gustav");
+                mArrayList = DS.fetchAll(1, ascending);
                 closeDB();
-                setupRecyclerView((RecyclerView) recyclerView);
+                mAdapter.notifyDataSetChanged();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
