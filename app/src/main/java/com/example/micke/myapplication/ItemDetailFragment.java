@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.micke.myapplication.dummy.DummyContent;
@@ -30,11 +31,14 @@ public class ItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
     public static final String ARG_ITEM_TITLE = "item_title";
     public static final String ARG_ITEM_DESCRIPTION = "item_description";
+    public static final String ARG_ITEM_RATING = "item_rating";
 
     /**
      * The dummy content this fragment is presenting.
      */
     private Item mItem;
+
+    private RatingBar ratingBar;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -58,6 +62,7 @@ public class ItemDetailFragment extends Fragment {
             Long argID = getArguments().getLong(ARG_ITEM_ID, 0);
             String argTitle = getArguments().getString(ARG_ITEM_TITLE);
             String argDescription = getArguments().getString(ARG_ITEM_DESCRIPTION);
+            int argRating = getArguments().getInt(ARG_ITEM_RATING);
 
             Log.d("kalle", String.valueOf(argID));
             Log.d("kalle",argTitle);
@@ -66,6 +71,7 @@ public class ItemDetailFragment extends Fragment {
             mItem.setId(argID);
             mItem.setTitle(argTitle);
             mItem.setDescription(argDescription);
+            mItem.setRating(argRating);
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
@@ -80,11 +86,12 @@ public class ItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.item_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_layout, container, false);
+        ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
 
-        // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.item_detail)).setText(mItem.getDescription());
+            ((TextView) rootView.findViewById(R.id.text_description)).setText(mItem.getDescription());
+            ratingBar.setNumStars(mItem.getRating());
         }
 
         return rootView;

@@ -60,6 +60,8 @@ public class ItemDetailActivity extends AppCompatActivity {
                     getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_TITLE));
             arguments.putString(ItemDetailFragment.ARG_ITEM_DESCRIPTION,
                     getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_DESCRIPTION));
+            arguments.putInt(ItemDetailFragment.ARG_ITEM_RATING,
+                    getIntent().getIntExtra(ItemDetailFragment.ARG_ITEM_RATING, 0));
 
             ItemDetailFragment fragment = new ItemDetailFragment();
             fragment.setArguments(arguments);

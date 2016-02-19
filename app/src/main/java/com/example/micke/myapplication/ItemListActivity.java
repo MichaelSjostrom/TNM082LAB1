@@ -150,7 +150,7 @@ public class ItemListActivity extends AppCompatActivity {
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_TITLE, String.valueOf(holder.mItem.getTitle()));
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_DESCRIPTION, String.valueOf(holder.mItem.getDescription()));
-
+                        intent.putExtra(ItemDetailFragment.ARG_ITEM_RATING, holder.mItem.getRating());
                         context.startActivity(intent);
                     }
                 }
