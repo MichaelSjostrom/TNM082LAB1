@@ -28,6 +28,7 @@ import com.example.micke.myapplication.dummy.DummyContent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * An activity representing a list of Items. This activity
@@ -128,6 +129,7 @@ public class ItemListActivity extends AppCompatActivity {
                         arguments.putLong(ItemDetailFragment.ARG_ITEM_ID, holder.mItem.getId());
                         arguments.putString(ItemDetailFragment.ARG_ITEM_TITLE, String.valueOf(holder.mItem.getTitle()));
                         arguments.putString(ItemDetailFragment.ARG_ITEM_DESCRIPTION, String.valueOf(holder.mItem.getDescription()));
+                        arguments.putInt(ItemDetailFragment.ARG_ITEM_RATING, holder.mItem.getRating());
                         ItemDetailFragment fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
@@ -151,7 +153,8 @@ public class ItemListActivity extends AppCompatActivity {
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_TITLE, String.valueOf(holder.mItem.getTitle()));
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_DESCRIPTION, String.valueOf(holder.mItem.getDescription()));
                         intent.putExtra(ItemDetailFragment.ARG_ITEM_RATING, holder.mItem.getRating());
-                        context.startActivity(intent);
+                        //context.startActivity(intent);
+                        startActivityForResult(intent, 0);
                     }
                 }
             });
@@ -241,6 +244,30 @@ public class ItemListActivity extends AppCompatActivity {
             //mActionMode = null;
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        if(requestCode == 0){
+            if(resultCode == Activity.RESULT_OK){
+                long itemId = data.getLongExtra(ItemDetailFragment.ARG_ITEM_ID, 0);
+                deletePost(itemId);
+            }
+        }
+
+    }
+
+    private void deletePost(long itemId){
+        openDB();
+        ListIterator<Item> iter = mArrayList.listIterator();
+        while(iter.hasNext()){
+            if(iter.next().getId() == itemId)
+                iter.remove();
+        }
+        mAdapter.notifyDataSetChanged();
+        DS.deleteItem(itemId);
+        closeDB();
+    }
 
     private void openDB(){
         DS = new Datasource(this);

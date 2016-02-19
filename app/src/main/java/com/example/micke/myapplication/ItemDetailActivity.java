@@ -1,10 +1,13 @@
 package com.example.micke.myapplication;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -19,7 +22,7 @@ import android.view.MenuItem;
  * in a {@link ItemListActivity}.
  */
 public class ItemDetailActivity extends AppCompatActivity {
-
+    private long itemId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,8 +57,10 @@ public class ItemDetailActivity extends AppCompatActivity {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
             Bundle arguments = new Bundle();
-            arguments.putLong(ItemDetailFragment.ARG_ITEM_ID,
-                    getIntent().getLongExtra(ItemDetailFragment.ARG_ITEM_ID, 0));
+            itemId = getIntent().getLongExtra(ItemDetailFragment.ARG_ITEM_ID, 0);
+            Log.d("TAG", "1: itemId is: " + String.valueOf(itemId));
+
+            arguments.putLong(ItemDetailFragment.ARG_ITEM_ID, itemId);
             arguments.putString(ItemDetailFragment.ARG_ITEM_TITLE,
                     getIntent().getStringExtra(ItemDetailFragment.ARG_ITEM_TITLE));
             arguments.putString(ItemDetailFragment.ARG_ITEM_DESCRIPTION,
@@ -83,6 +88,17 @@ public class ItemDetailActivity extends AppCompatActivity {
             //
             navigateUpTo(new Intent(this, ItemListActivity.class));
             return true;
+        }
+        if(id == R.id.delete){
+            Log.d("TAG", "delete is pushed");
+            //Intent intent = new Intent(this, ItemListActivity.class);
+            //intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, itemId);
+            //startActivityForResult(intent, 0);
+            Log.d("TAG", "2: itemId is: " + String.valueOf(itemId));
+            Intent intent = new Intent();
+            intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, itemId);
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
