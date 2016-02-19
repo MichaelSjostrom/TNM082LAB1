@@ -52,6 +52,7 @@ public class ItemListActivity extends AppCompatActivity {
     private boolean ascending = true;
     private SimpleItemRecyclerViewAdapter mAdapter;
     View recyclerView;
+    private int mActivatedPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +121,7 @@ public class ItemListActivity extends AppCompatActivity {
             holder.mItem = mArrayList.get(position);
             holder.mIdView.setText(String.valueOf(mArrayList.get(position).getId()));
             holder.mContentView.setText(mArrayList.get(position).getDescription());
-
+            mActivatedPosition = position;
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -232,6 +233,11 @@ public class ItemListActivity extends AppCompatActivity {
                 case R.id.edit:
                     //shareCurrentItem();
                     mode.finish(); // Action picked, so close the CAB
+                    return true;
+                case R.id.delete:
+                    Log.d("TAG", "delete pushed in mtwopane");
+                    long itemId = mArrayList.get(mActivatedPosition).getId();
+                    deletePost(itemId);
                     return true;
                 default:
                     return false;
