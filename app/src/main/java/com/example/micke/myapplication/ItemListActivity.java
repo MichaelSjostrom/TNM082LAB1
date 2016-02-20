@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -41,7 +42,7 @@ import java.util.ListIterator;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity extends AppCompatActivity implements SortingDialogFragment.NoticeDialogListener {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
@@ -61,7 +62,7 @@ public class ItemListActivity extends AppCompatActivity {
 
     private ItemDetailFragment fragment;
 
-    private SortingDialogFragment sortingDialogFragment;
+    SortingDialogFragment sortingDialogFragment;
 
     SharedPreferences prefs;
 
@@ -89,7 +90,7 @@ public class ItemListActivity extends AppCompatActivity {
 
 
 
-        sortingDialogFragment = new SortingDialogFragment();
+        //sortingDialogFragment = new SortingDialogFragment();
         recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -220,8 +221,11 @@ public class ItemListActivity extends AppCompatActivity {
                 mAdapter.notifyDataSetChanged();
                 return true;
             case R.id.sorting:
-                sortingDialogFragment.show(getFragmentManager(), "HEJ");
-
+                //sortingDialogFragment.show(getFragmentManager(), "HEJ");
+                showNoticeDialog();
+                //int sortOn = prefs.getInt(SortingDialogFragment.ARG_SORT, 0);
+                //Log.d("TAG", "Chosen stort is nr: " + String.valueOf(sortOn));
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -282,6 +286,28 @@ public class ItemListActivity extends AppCompatActivity {
                 deletePost(itemId);
             }
         }
+
+    }
+
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        //DialogFragment dialog = new NoticeDialogFragment();
+        sortingDialogFragment = new SortingDialogFragment();
+        sortingDialogFragment.show(getFragmentManager(), "SortingDialogFragment");
+    }
+
+    @Override
+    public void onDialogPositiveClick(android.app.DialogFragment dialogFragment) {
+        //retrieves the chosen sort from SortingDialogFragment
+        int chosenSort = prefs.getInt(SortingDialogFragment.ARG_SORT, 0);
+        openDB();
+        mArrayList = DS.fetchAll(chosenSort, false);
+        closeDB();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDialogNegativeClick(android.app.DialogFragment dialogFragment) {
 
     }
 
