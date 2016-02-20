@@ -34,7 +34,7 @@ public class ItemDetailFragment extends Fragment {
     public static final String ARG_ITEM_RATING = "item_rating";
 
     /**
-     * The dummy content this fragment is presenting.
+     * The Item content this fragment is presenting.
      */
     private Item mItem;
 
@@ -53,21 +53,12 @@ public class ItemDetailFragment extends Fragment {
         mItem = new Item();
 
         if (getArguments().containsKey(ARG_ITEM_ID)) {
-            // Load the dummy content specified by the fragment
-            // arguments. In a real-world scenario, use a Loader
-            // to load content from a content provider.
 
-            //This should be replaced
-            //mItem = DummyContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
             Long argID = getArguments().getLong(ARG_ITEM_ID, 0);
             String argTitle = getArguments().getString(ARG_ITEM_TITLE);
             String argDescription = getArguments().getString(ARG_ITEM_DESCRIPTION);
             int argRating = getArguments().getInt(ARG_ITEM_RATING);
 
-            Log.d("kalle", String.valueOf(argID));
-            Log.d("kalle",argTitle);
-            Log.d("kalle",argDescription);
-            Log.d("kalle","after");
             mItem.setId(argID);
             mItem.setTitle(argTitle);
             mItem.setDescription(argDescription);

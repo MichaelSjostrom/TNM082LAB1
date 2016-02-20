@@ -3,6 +3,7 @@ package com.example.micke.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,7 +54,12 @@ public class ItemListActivity extends AppCompatActivity {
     private boolean ascending = true;
     private SimpleItemRecyclerViewAdapter mAdapter;
     View recyclerView;
-    private int mActivatedPosition;
+
+    //Used to keep track in which post is pressed in mtwopane view
+    private long mActivatedPosition;
+
+    private ItemDetailFragment fragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +81,7 @@ public class ItemListActivity extends AppCompatActivity {
         });
 
 
-       /* openDB();
-        //Varför vägrar den radera "COLUMN_ID"?
-        DS.deleteAllItems();
-        DS.insertItem("professor", 1, "idiot");
-        DS.insertItem("student", 2, "lunatic");
-        closeDB();*/
+
 
         recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
@@ -121,7 +123,7 @@ public class ItemListActivity extends AppCompatActivity {
             holder.mItem = mArrayList.get(position);
             holder.mIdView.setText(String.valueOf(mArrayList.get(position).getId()));
             holder.mContentView.setText(mArrayList.get(position).getDescription());
-            mActivatedPosition = position;
+
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -131,11 +133,16 @@ public class ItemListActivity extends AppCompatActivity {
                         arguments.putString(ItemDetailFragment.ARG_ITEM_TITLE, String.valueOf(holder.mItem.getTitle()));
                         arguments.putString(ItemDetailFragment.ARG_ITEM_DESCRIPTION, String.valueOf(holder.mItem.getDescription()));
                         arguments.putInt(ItemDetailFragment.ARG_ITEM_RATING, holder.mItem.getRating());
-                        ItemDetailFragment fragment = new ItemDetailFragment();
+                        fragment = new ItemDetailFragment();
                         fragment.setArguments(arguments);
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.item_detail_container, fragment)
                                 .commit();
+                        //Hur sätta backgroundcolor så att den ändras för varje klick.
+                        //holder.mView.setBackgroundColor(Color.BLACK);
+
+
+                        mActivatedPosition = holder.mItem.getId();
 
                         /*UPPGIFT:Skapa en contextualactionbar med alternativen delete och edit,
                           se ﬁgur 7. Denna ska endast visas på plattor, när man använder mobil så
@@ -168,6 +175,7 @@ public class ItemListActivity extends AppCompatActivity {
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
+            public final View oldView;
             public final TextView mIdView;
             public final TextView mContentView;
             public Item mItem;
@@ -175,6 +183,7 @@ public class ItemListActivity extends AppCompatActivity {
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
+                oldView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
@@ -235,9 +244,9 @@ public class ItemListActivity extends AppCompatActivity {
                     mode.finish(); // Action picked, so close the CAB
                     return true;
                 case R.id.delete:
-                    Log.d("TAG", "delete pushed in mtwopane");
-                    long itemId = mArrayList.get(mActivatedPosition).getId();
-                    deletePost(itemId);
+                    if(mArrayList.size() != 0) {
+                        deletePost(mActivatedPosition);
+                    }
                     return true;
                 default:
                     return false;
