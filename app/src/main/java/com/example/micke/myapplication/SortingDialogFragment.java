@@ -13,7 +13,8 @@ public class SortingDialogFragment extends DialogFragment {
 
     public static final String ARG_SORT = "sort";
 
-    private int chosenSort;
+
+    private int chosenSort = 1;
     private SharedPreferences preferences;
 
     // Use this instance of the interface to deliver action events
@@ -25,7 +26,7 @@ public class SortingDialogFragment extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.set_sorting)
-                .setSingleChoiceItems(R.array.array_sorting,0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(R.array.array_sorting, 0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //+1 because 0 is actually ID which is not shown in the listview

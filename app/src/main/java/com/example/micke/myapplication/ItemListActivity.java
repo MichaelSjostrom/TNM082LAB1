@@ -48,12 +48,14 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
+    public static final String ARG_ASCENDING_ORDER = "ascending_order";
+
     private boolean mTwoPane;
     private ActionMode mActionMode;
     public Datasource DS;
     private ArrayList<Item> mArrayList;
 
-    private boolean ascending = true;
+    private boolean ascending = false;
     private SimpleItemRecyclerViewAdapter mAdapter;
     View recyclerView;
 
@@ -217,13 +219,27 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
                 DS.insertItem("kalle", 5, "anka");
                 DS.insertItem("da", 1, "man");
                 DS.insertItem("skapligt", 2, "trög");
-                DS.insertItem("james", 4,"bond");
+                DS.insertItem("james", 4, "bond");
                 mArrayList = DS.fetchAll(0, ascending);
                 closeDB();
                 mAdapter.notifyDataSetChanged();
                 return true;
             case R.id.sorting:
                 showNoticeDialog();
+                return true;
+            case R.id.ascending_order:
+                item.setChecked(!item.isChecked());
+
+                if(item.isChecked())
+                    ascending = true;
+                else
+                    ascending = false;
+
+                prefs.edit().putBoolean(ARG_ASCENDING_ORDER, ascending).apply();
+                int chosenSort = prefs.getInt(SortingDialogFragment.ARG_SORT, 1);
+                Log.d("TAG", "in case, chosenSort = " + String.valueOf(chosenSort));
+
+                sortPosts(chosenSort, ascending);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -288,21 +304,20 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
 
     }
 
+    SortingDialogFragment sortingDialogFragment;
     public void showNoticeDialog() {
         // Create an instance of the dialog fragment and show it
         //DialogFragment dialog = new NoticeDialogFragment();
-        SortingDialogFragment sortingDialogFragment = new SortingDialogFragment();
+         sortingDialogFragment = new SortingDialogFragment();
         sortingDialogFragment.show(getFragmentManager(), "SortingDialogFragment");
     }
 
     @Override
     public void onDialogPositiveClick(android.app.DialogFragment dialogFragment) {
         //retrieves the chosen sort from SortingDialogFragment
-        int chosenSort = prefs.getInt(SortingDialogFragment.ARG_SORT, 0);
-        openDB();
-        mArrayList = DS.fetchAll(chosenSort, ascending);
-        closeDB();
-        mAdapter.notifyDataSetChanged();
+        int chosenSort = prefs.getInt(sortingDialogFragment.ARG_SORT, 1);
+
+        sortPosts(chosenSort, ascending);
     }
 
     @Override
@@ -320,6 +335,15 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         mAdapter.notifyDataSetChanged();
         DS.deleteItem(itemId);
         closeDB();
+    }
+
+    private void sortPosts(int which, boolean order){
+        openDB();
+        mArrayList = DS.fetchAll(which, order);
+        closeDB();
+        mAdapter.notifyDataSetChanged();
+
+        Log.d("TAG", "in sortPosts, chosenSort is = " + String.valueOf(which));
     }
 
     private void openDB(){
