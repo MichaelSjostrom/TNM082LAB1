@@ -3,6 +3,7 @@ package com.example.micke.myapplication;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -60,6 +61,9 @@ public class ItemListActivity extends AppCompatActivity {
 
     private ItemDetailFragment fragment;
 
+    private SortingDialogFragment sortingDialogFragment;
+
+    SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +73,9 @@ public class ItemListActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+
+        //Shared preferences
+        prefs = this.getSharedPreferences("com.example.micke.myapplication", Context.MODE_PRIVATE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -82,7 +89,7 @@ public class ItemListActivity extends AppCompatActivity {
 
 
 
-
+        sortingDialogFragment = new SortingDialogFragment();
         recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
         setupRecyclerView((RecyclerView) recyclerView);
@@ -212,6 +219,9 @@ public class ItemListActivity extends AppCompatActivity {
                 closeDB();
                 mAdapter.notifyDataSetChanged();
                 return true;
+            case R.id.sorting:
+                sortingDialogFragment.show(getFragmentManager(), "HEJ");
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -259,7 +269,7 @@ public class ItemListActivity extends AppCompatActivity {
         // Called when the user exits the action mode
         @Override
         public void onDestroyActionMode(ActionMode mode) {
-            //mActionMode = null;
+            mActionMode = null;
         }
     };
 
