@@ -11,8 +11,8 @@
     <string name="finish">finish</string>
     <string name="cancel">cancel</string>
     <string-array name="array_sorting">
-        <item>ID</item>
         <item>Title</item>
+        <item>Rating</item>
     </string-array>
 
 

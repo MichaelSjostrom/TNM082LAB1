@@ -62,8 +62,6 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
 
     private ItemDetailFragment fragment;
 
-    SortingDialogFragment sortingDialogFragment;
-
     SharedPreferences prefs;
 
     @Override
@@ -129,8 +127,8 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             holder.mItem = mArrayList.get(position);
-            holder.mIdView.setText(String.valueOf(mArrayList.get(position).getId()));
-            holder.mContentView.setText(mArrayList.get(position).getDescription());
+            holder.mIdView.setText(String.valueOf(mArrayList.get(position).getRating()));
+            holder.mContentView.setText(mArrayList.get(position).getTitle());
 
             holder.mView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,15 +214,16 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
             case R.id.add:
                 openDB();
                 DS.insertItem("kung", 3, "gustav");
-                mArrayList = DS.fetchAll(1, ascending);
+                DS.insertItem("kalle", 5, "anka");
+                DS.insertItem("da", 1, "man");
+                DS.insertItem("skapligt", 2, "trög");
+                DS.insertItem("james", 4,"bond");
+                mArrayList = DS.fetchAll(0, ascending);
                 closeDB();
                 mAdapter.notifyDataSetChanged();
                 return true;
             case R.id.sorting:
-                //sortingDialogFragment.show(getFragmentManager(), "HEJ");
                 showNoticeDialog();
-                //int sortOn = prefs.getInt(SortingDialogFragment.ARG_SORT, 0);
-                //Log.d("TAG", "Chosen stort is nr: " + String.valueOf(sortOn));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -292,7 +291,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
     public void showNoticeDialog() {
         // Create an instance of the dialog fragment and show it
         //DialogFragment dialog = new NoticeDialogFragment();
-        sortingDialogFragment = new SortingDialogFragment();
+        SortingDialogFragment sortingDialogFragment = new SortingDialogFragment();
         sortingDialogFragment.show(getFragmentManager(), "SortingDialogFragment");
     }
 
@@ -301,7 +300,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         //retrieves the chosen sort from SortingDialogFragment
         int chosenSort = prefs.getInt(SortingDialogFragment.ARG_SORT, 0);
         openDB();
-        mArrayList = DS.fetchAll(chosenSort, false);
+        mArrayList = DS.fetchAll(chosenSort, ascending);
         closeDB();
         mAdapter.notifyDataSetChanged();
     }

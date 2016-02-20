@@ -28,7 +28,9 @@ public class SortingDialogFragment extends DialogFragment {
                 .setSingleChoiceItems(R.array.array_sorting,0, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        chosenSort = which;
+                        //+1 because 0 is actually ID which is not shown in the listview
+                        //FIX THIS
+                        chosenSort = which + 1;
                     }
                 })
                 .setPositiveButton(R.string.finish, new DialogInterface.OnClickListener() {
