@@ -246,6 +246,9 @@ public class ItemListActivity extends AppCompatActivity {
                 case R.id.delete:
                     if(mArrayList.size() != 0) {
                         deletePost(mActivatedPosition);
+                        if(fragment != null)
+                            getSupportFragmentManager().beginTransaction().remove(fragment).commit();
+                            mode.finish();
                     }
                     return true;
                 default:
