@@ -90,11 +90,7 @@ public class ItemDetailActivity extends AppCompatActivity {
             return true;
         }
         if(id == R.id.delete){
-            Log.d("TAG", "delete is pushed");
-            //Intent intent = new Intent(this, ItemListActivity.class);
-            //intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, itemId);
-            //startActivityForResult(intent, 0);
-            Log.d("TAG", "2: itemId is: " + String.valueOf(itemId));
+            //Callback for onActivityResult in ItemListActivity
             Intent intent = new Intent();
             intent.putExtra(ItemDetailFragment.ARG_ITEM_ID, itemId);
             setResult(Activity.RESULT_OK, intent);

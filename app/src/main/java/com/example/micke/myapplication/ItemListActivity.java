@@ -55,6 +55,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
     public Datasource DS;
     private ArrayList<Item> mArrayList;
 
+    //Set if ascending order should be used or not
     private boolean ascending = false;
     private SimpleItemRecyclerViewAdapter mAdapter;
     View recyclerView;
@@ -64,7 +65,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
 
     private ItemDetailFragment fragment;
 
-    SharedPreferences prefs;
+    private SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         toolbar.setTitle(getTitle());
 
         //Shared preferences
-        prefs = this.getSharedPreferences("com.example.micke.myapplication", Context.MODE_PRIVATE);
+        preferences = this.getSharedPreferences("com.example.micke.myapplication", Context.MODE_PRIVATE);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -115,7 +116,6 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         public SimpleItemRecyclerViewAdapter() {
             openDB();
             mArrayList = DS.fetchAll(1, ascending);
-            Log.d("TAG", String.valueOf(mArrayList.size()));
             closeDB();
         }
 
@@ -183,7 +183,6 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
 
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View mView;
-            public final View oldView;
             public final TextView mIdView;
             public final TextView mContentView;
             public Item mItem;
@@ -191,7 +190,6 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
             public ViewHolder(View view) {
                 super(view);
                 mView = view;
-                oldView = view;
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
             }
@@ -235,8 +233,8 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
                 else
                     ascending = false;
 
-                prefs.edit().putBoolean(ARG_ASCENDING_ORDER, ascending).apply();
-                int chosenSort = prefs.getInt(SortingDialogFragment.ARG_SORT, 1);
+                preferences.edit().putBoolean(ARG_ASCENDING_ORDER, ascending).apply();
+                int chosenSort = preferences.getInt(SortingDialogFragment.ARG_SORT, 1);
                 Log.d("TAG", "in case, chosenSort = " + String.valueOf(chosenSort));
 
                 sortPosts(chosenSort, ascending);
@@ -307,15 +305,14 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
     SortingDialogFragment sortingDialogFragment;
     public void showNoticeDialog() {
         // Create an instance of the dialog fragment and show it
-        //DialogFragment dialog = new NoticeDialogFragment();
-         sortingDialogFragment = new SortingDialogFragment();
+        sortingDialogFragment = new SortingDialogFragment();
         sortingDialogFragment.show(getFragmentManager(), "SortingDialogFragment");
     }
 
     @Override
     public void onDialogPositiveClick(android.app.DialogFragment dialogFragment) {
         //retrieves the chosen sort from SortingDialogFragment
-        int chosenSort = prefs.getInt(sortingDialogFragment.ARG_SORT, 1);
+        int chosenSort = preferences.getInt(sortingDialogFragment.ARG_SORT, 1);
 
         sortPosts(chosenSort, ascending);
     }
@@ -328,6 +325,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
 
     private void deletePost(long itemId){
         openDB();
+        //Using iterator because mArrayList.remove(..) does not work
         ListIterator<Item> iter = mArrayList.listIterator();
         while(iter.hasNext()){
             if(iter.next().getId() == itemId)
@@ -336,15 +334,15 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         mAdapter.notifyDataSetChanged();
         DS.deleteItem(itemId);
         closeDB();
+
     }
 
+    //Sorts the posts by using Datasource sort.
     private void sortPosts(int which, boolean order){
         openDB();
         mArrayList = DS.fetchAll(which, order);
         closeDB();
         mAdapter.notifyDataSetChanged();
-
-        Log.d("TAG", "in sortPosts, chosenSort is = " + String.valueOf(which));
     }
 
     private void openDB(){

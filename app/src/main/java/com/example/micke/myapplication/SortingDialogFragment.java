@@ -13,7 +13,8 @@ public class SortingDialogFragment extends DialogFragment {
 
     public static final String ARG_SORT = "sort";
 
-
+    //Set to 1 because user dosent always click on one of the radio buttons
+    //, if not set to one, chosenSort could be 0 which is ID column in the activity.
     private int chosenSort = 1;
     private SharedPreferences preferences;
 
