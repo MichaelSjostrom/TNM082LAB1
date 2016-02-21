@@ -76,7 +76,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
-        oldView = findViewById(R.id.id);
+       
         //Shared preferences
         preferences = this.getSharedPreferences("com.example.micke.myapplication", Context.MODE_PRIVATE);
 
