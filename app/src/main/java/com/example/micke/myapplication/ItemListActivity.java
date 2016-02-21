@@ -76,6 +76,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
 
+        oldView = findViewById(R.id.id);
         //Shared preferences
         preferences = this.getSharedPreferences("com.example.micke.myapplication", Context.MODE_PRIVATE);
 
@@ -148,7 +149,6 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
                                 .commit();
                         //Hur sätta backgroundcolor så att den ändras för varje klick.
                         //holder.mView.setBackgroundColor(Color.BLACK);
-
 
                         mActivatedPosition = holder.mItem.getId();
 
