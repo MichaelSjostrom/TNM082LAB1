@@ -320,6 +320,7 @@ public class ItemListActivity extends AppCompatActivity implements SortingDialog
         sortPosts(chosenSort, ascending);
     }
 
+    //Not used for the moment
     @Override
     public void onDialogNegativeClick(android.app.DialogFragment dialogFragment) {
 
